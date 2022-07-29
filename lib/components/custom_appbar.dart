@@ -2,12 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppBar({
-    Key? key,
-  }) : super(key: key);
+  final Icon centerIcon;
+  final String hintText;
+  final IconData? firstActionIcon;
+  final IconData secondActionIcon;
+
+  const CustomAppBar(
+      {Key? key,
+      required this.centerIcon,
+      required this.hintText,
+      this.firstActionIcon,
+      required this.secondActionIcon})
+      : super(key: key);
 
   @override
-  Size get preferredSize => const Size.fromHeight(40.0);
+  Size get preferredSize =>
+      const Size.fromHeight(kBottomNavigationBarHeight * 0.6);
 
   @override
   Widget build(BuildContext context) {
@@ -26,29 +36,28 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         elevation: 0,
         systemOverlayStyle: SystemUiOverlayStyle.light,
         leading: const Padding(
-          padding: EdgeInsets.only(left: 22.0),
+          padding: EdgeInsets.only(
+            left: kBottomNavigationBarHeight * 0.2,
+          ),
           child: CircleAvatar(
             backgroundColor: Colors.grey,
           ),
         ),
         title: Padding(
-          padding: const EdgeInsets.only(left: 10.0),
+          padding:
+              const EdgeInsets.only(left: kBottomNavigationBarHeight * 0.02),
           child: Container(
             width: double.infinity,
-            height: 35,
+            height: kBottomNavigationBarHeight * 0.6,
             decoration: BoxDecoration(
                 color: Colors.grey[700],
                 borderRadius: BorderRadius.circular(5)),
-            child: const TextField(
+            child: TextField(
               decoration: InputDecoration(
                   alignLabelWithHint: true,
-                  prefixIcon: Icon(
-                    Icons.search,
-                    color: Color.fromARGB(255, 197, 195, 195),
-                    size: 20.0,
-                  ),
+                  prefixIcon: centerIcon,
                   hintText: 'Search',
-                  hintStyle: TextStyle(
+                  hintStyle: const TextStyle(
                       fontSize: 15.0,
                       color: Color.fromARGB(255, 197, 195, 195)),
                   border: InputBorder.none),
@@ -57,16 +66,28 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(left: 0.0, right: 10.0),
-            child: IconButton(
-                splashColor: Colors.transparent,
-                highlightColor: Colors.transparent,
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.chat_rounded,
-                  color: Color.fromARGB(255, 197, 195, 195),
-                  size: 25.0,
-                )),
+            padding: const EdgeInsets.only(left: 0.0, right: 5.0, bottom: 20),
+            child: Row(children: [
+              if (firstActionIcon != null)
+                IconButton(
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    onPressed: () {},
+                    icon: Icon(
+                      firstActionIcon,
+                      color: const Color.fromARGB(255, 197, 195, 195),
+                      size: kBottomNavigationBarHeight * 0.4,
+                    )),
+              IconButton(
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  onPressed: () {},
+                  icon: Icon(
+                    secondActionIcon,
+                    color: const Color.fromARGB(255, 197, 195, 195),
+                    size: kBottomNavigationBarHeight * 0.4,
+                  )),
+            ]),
           )
         ]);
   }
